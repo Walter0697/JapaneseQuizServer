@@ -101,6 +101,9 @@ def create_ruverb():
     cursor.execute("INSERT INTO ru_verb (verb) VALUES (%s)", (u"じろじろみる",))
     cursor.execute("INSERT INTO ru_verb (verb) VALUES (%s)", (u"すてる",))
     cursor.execute("INSERT INTO ru_verb (verb) VALUES (%s)", (u"はじめる",))
+    cursor.execute("INSERT INTO ru_verb (verb) VALUES (%s)", (u"おぼえる",))
+    cursor.execute("INSERT INTO ru_verb (verb) VALUES (%s)", (u"でる",))
+    cursor.execute("INSERT INTO ru_verb (verb) VALUES (%s)", (u"出る",))
 
     print("INSERTED DATA TO TABLE ru_verb\n")
     database.commit()
@@ -160,11 +163,37 @@ def create_verb():
     cursor.execute("INSERT INTO verb (word, meaning, chapter) VALUES (%s, %s, 8)", (u"すてる", u"to throw away"))
     cursor.execute("INSERT INTO verb (word, meaning, chapter) VALUES (%s, %s, 8)", (u"はじめる", u"to begin"))
 
+    cursor.execute("INSERT INTO verb (word, meaning, chapter) VALUES (%s, %s, 9)", (u"おどる", u"to dance"))
+    cursor.execute("INSERT INTO verb (word, meaning, chapter) VALUES (%s, %s, 9)", (u"おわる", u"(something) ends"))
+    cursor.execute("INSERT INTO verb (word, meaning, chapter) VALUES (%s, %s, 9)", (u"にんきがある", u"to be popular"))
+    cursor.execute("INSERT INTO verb (word, meaning, chapter) VALUES (%s, %s, 9)", (u"はじまる", u"(something) begins"))
+    cursor.execute("INSERT INTO verb (word, meaning, chapter) VALUES (%s, %s, 9)", (u"ひく", u"to play (string instrument or piano)"))
+    cursor.execute("INSERT INTO verb (word, meaning, chapter) VALUES (%s, %s, 9)", (u"もらう", u"to get (from somebody)"))
+    cursor.execute("INSERT INTO verb (word, meaning, chapter) VALUES (%s, %s, 9)", (u"おぼえる", u"to memorize"))
+    cursor.execute("INSERT INTO verb (word, meaning, chapter) VALUES (%s, %s, 9)", (u"でる", u"to exit/ to appear"))
     
     print("INSERTED DATA TO TABLE verb")
     database.commit()
-    
+ 
+def create_vocab():
+    print("CREATING TABLE vocab")
+    cursor.execute("DROP TABLE IF EXISTS vocab;")
+    cursor.execute("""CREATE TABLE vocab(
+            word VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+            meaning VARCHAR(50),
+            chapter INT
+            );""")
+
+    print("INSERTING DATA TO TABLE vocab")
+    cursor.execute("INSERT INTO vocab (word, meaning, chapter) VALUES (%s, %s, 1)", (u"あの", u"now"))
+
+    print("INSERTED DATA TO TABLE vocab")
+    database.commit()
+
+
+
 #create_hiragana()
 #create_specialform()
 #create_ruverb()
-create_verb()
+#create_verb()
+create_vocab()

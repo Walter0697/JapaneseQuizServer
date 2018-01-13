@@ -9,9 +9,8 @@ import random
 #CONSTANT ARRAY
 instruction = {"instruction":"use the following path to get more result",
         "/verbConvert/{verb}":"this will show you most verb conjugation",
-        "/question/{year}/{type}":"use random to get random year or type, only /first_year/verb is implemented for now"}
+        "/question/{type}/{year/chapter}/{range}":"use random to get random year or type, example /question/verb/year/1"}
 
-all_years = ["first_year"]
 first_year = ["present", "negative", "te_form", "past", "past_negative", "negative_short"]
 second_year = ["past_negative_short", "past_short"]
 
@@ -28,7 +27,7 @@ class JapConverter:
         if path[0] == "verbConvert":
             return convertJson(verbConversion(path[1], self.dbHandler))
         elif path[0] == "question":
-            return getQuestion(path[1], path[2], self.dbHandler)
+            return convertJson(getQuestion(path[1:], self.dbHandler))
         else:
             return convertJson(instruction)
 
@@ -37,37 +36,56 @@ class JapConverter:
 
 
 #GET A RANDOM QUESTION
-def getQuestion(year, q_type, database):
-    output = {}
-
-    selectedYear = year
-    if year == "random":
-        selectedYear = random.choice(all_years)
-    
-    if selectedYear in all_years:
-        if q_type == "verb":
-            #getting all verbs from the corresponding year
-            query = "SELECT * FROM " + year + "_verb"
-            info = database.getOutput(query)
-            
-            question = random.choice(info)
-            output["verb"] = question["word"]
-            output["meaning"] = question["meaning"]
-            conjugation = verbConversion(output["verb"], database)
-            #select what form to ask
-            if selectedYear == "first_year":
-                output["question"] = random.choice(first_year)
-                output["answer"] = conjugation[output["question"]]
-            elif selectedYear == "second_year":
-                verb_form = first_year + second_year
-                output["question"] = random.choice(verb_form)
-                output["answer"] = conjugation[output["question"]]
-                
-        else:
-            output['error'] = "not implemented yet"
+def getQuestion(question_type, database):
+    if question_type[0] == "verb":
+        return getVerbQuestion(question_type[1], int(question_type[2]), database)
     else:
-        output['error'] = "invalid year"
-    return convertJson(output)
+        return {"error" : "invalid type of question"}
+            
+
+def getVerbQuestion(selectWith, selectRange, database):
+    output = {}
+    query = None
+    year = None
+    if selectWith == "year":
+        if selectRange == 1:
+            query = "SELECT * FROM verb WHERE chapter <= 8"
+        elif selectRange == 2:
+            query = "SELECT * FROM verb WHERE chapter > 8"
+        else:
+            query = "SELECT * FROM verb"
+        year = selectRange
+    elif selectWith == "chapter":
+        query = "SELECT * FROM verb WHERE chapter = " + str(selectRange)
+        if selectRange <= 8:
+            year = 1
+        elif selectRange > 8:
+            year = 2
+        else:
+            year = 0
+    else:
+        output["error"] = "invalid input"
+        return output
+
+    #getting the information from the database
+    info = database.getOutput(query)
+    if len(info) == 0:
+        output["error"] = "nothing inside database"
+        return output
+    question = random.choice(info)
+    output["verb"] = question["word"]
+    output["meaning"] = question["meaning"]
+    conjugation = verbConversion(output["verb"], database)
+    #select what form to ask
+    if year == 1:
+        output["question"] = random.choice(first_year)
+        output["answer"] = conjugation[output["question"]]
+    else:
+        verb_form = first_year + second_year
+        output["question"] = random.choice(second_year)
+        output["answer"] = conjugation[output["question"]]
+
+    return output
 
 #CONVERTING VERB INTO DIFFERENT FORM
 def verbConversion(verb, database):
@@ -102,7 +120,6 @@ def verbConversion(verb, database):
     iletter = None
     aletter = None
     starting = None
-    print verb
     for row in info:
         if verb[-1] == row['u']:
             starting = row['start']
@@ -133,7 +150,7 @@ def verbConversion(verb, database):
             data['te_form'] = verb[:-1] + u"してi"
         #negative short
         data['negative_short'] = verb[:-1] + aletter + u"ない"
-        if data['te_form'][-1] == "て":
+        if data['te_form'][-1] == u"て":
             data['past_short'] = data['te_form'][:-1] + u"た"
         else :
             data['past_short'] = data['te_form'][:-1] + u"だ"
