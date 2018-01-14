@@ -195,6 +195,30 @@ def create_verb():
     print("INSERTED DATA TO TABLE verb")
     database.commit()
  
+def create_adjective():
+    print("CREATE TABLE adjective")
+    cursor.execute("DROP TABLE IF EXISTS adjective;")
+    cursor.execute("""CREATE TABLE adjective(
+            word VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+            meaning VARCHAR(50),
+            chapter INT
+            );""")
+    
+    print("INSERTING DATA TO TABLE adjective")
+    cursor.execute("INSERT INTO adjective (word, meaning, chapter) VALUES (%s, %s, 3)", (u"いい", u"good"))
+    cursor.execute("INSERT INTO adjective (word, meaning, chapter) VALUES (%s, %s, 3)", (u"はやい", u"early"))
+    
+    cursor.execute("INSERT INTO adjective (word, meaning, chapter) VALUES (%s, %s, 9)", (u"あおい", u"blue"))
+    cursor.execute("INSERT INTO adjective (word, meaning, chapter) VALUES (%s, %s, 9)", (u"あかい", u"red"))
+    cursor.execute("INSERT INTO adjective (word, meaning, chapter) VALUES (%s, %s, 9)", (u"くろい", u"black"))
+    cursor.execute("INSERT INTO adjective (word, meaning, chapter) VALUES (%s, %s, 9)", (u"さびしい", u"lonely"))
+    cursor.execute("INSERT INTO adjective (word, meaning, chapter) VALUES (%s, %s, 9)", (u"しろい", u"white"))
+    cursor.execute("INSERT INTO adjective (word, meaning, chapter) VALUES (%s, %s, 9)", (u"わかい", u"young"))
+    cursor.execute("INSERT INTO adjective (word, meaning, chapter) VALUES (%s, %s, 9)", (u"いじわるな", u"mean-spirited"))
+    
+    print("INSERTED DATA TO TABLE adjective")
+    database.commit()
+    
 def create_vocab():
     print("CREATING TABLE vocab")
     cursor.execute("DROP TABLE IF EXISTS vocab;")
@@ -271,7 +295,8 @@ def create_vocab():
 
 #create_hiragana()
 #create_verb_specialform()
-create_adjective_specialform()
+#create_adjective_specialform()
 #create_ruverb()
 #create_verb()
 #create_vocab()
+create_adjective()
