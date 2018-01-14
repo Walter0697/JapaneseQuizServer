@@ -53,10 +53,13 @@ def getQuestion(question_type, database):
 def getVocabQuestion(selectWith, selectRange, question_type, database):
     output = {}
     query = None
-    if random.randint(0,1) == 1 or (selectWith == "chapter" and selectRange < 3):
+    randNum = random.randint(0, 2)
+    if randNum == 0 or (selectWith == "chapter" and selectRange < 3):
         query = "SELECT * FROM vocab " + getChapterQuery(selectWith, selectRange)
-    else:
+    elif randNum == 1:
         query = "SELECT * FROM verb " + getChapterQuery(selectWith, selectRange)
+    else:
+        query = "SELECT * FROM adjective " + getChapterQuery(selectWith, selectRange)
 
     #getting the information from the databse
     info = database.getOutput(query)
