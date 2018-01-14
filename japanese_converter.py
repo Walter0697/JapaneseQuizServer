@@ -9,7 +9,8 @@ import random
 #CONSTANT ARRAY
 instruction = {"instruction":"use the following path to get more result",
         "/verbConvert/{verb}":"this will show you most verb conjugation",
-        "/question/{type}/{year/chapter}/{range}":"use random to get random year or type, example /question/verb/year/1"}
+        "/question/verb/{year/chapter}/{range}":"use random to get random year or type, example /question/verb/year/1",
+        "/question/vocab/{year/chapter}/{range}/{type}":"type refers to mc or short question"}
 
 first_year = ["present", "negative", "te_form", "past", "past_negative", "negative_short"]
 second_year = ["past_negative_short", "past_short"]
@@ -39,24 +40,72 @@ class JapConverter:
 def getQuestion(question_type, database):
     if question_type[0] == "verb":
         return getVerbQuestion(question_type[1], int(question_type[2]), database)
+    elif question_type[0] == "vocab":
+        return getVocabQuestion(question_type[1], int(question_type[2]), question_type[3], database)
     else:
         return {"error" : "invalid type of question"}
             
 
-def getVerbQuestion(selectWith, selectRange, database):
+def getVocabQuestion(selectWith, selectRange, question_type, database):
     output = {}
     query = None
+    if random.randint(0,1) == 1 or (selectWith == "chapter" and selectRange < 3):
+        query = "SELECT * FROM vocab " + getChapterQuery(selectWith, selectRange)
+    else:
+        query = "SELECT * FROM verb " + getChapterQuery(selectWith, selectRange)
+
+    #getting the information from the databse
+    info = database.getOutput(query)
+    if len(info) == 0:
+        output["error"] = "nothing inside database"
+
+    question = random.choice(info)
+    #select what type of question
+    if question_type == "short_q":
+        output["meaning"] = question["meaning"]
+        output["vocab"] = question["word"]
+    elif question_type == "mc_meaning":
+        output["question"] = question["word"]
+        info.remove(question)
+        choice = []
+        choice.append(random.choice(info))
+        choice.append(random.choice(info))
+        choice.append(random.choice(info))
+        answer_at = random.randint(0,3)
+        for i in range(4):
+            if i == answer_at:
+                output[chr(97+i)] = question["meaning"]
+            else:
+                output[chr(97+i)] = choice.pop()["meaning"]
+        output["answer"] = str(answer_at)
+    elif question_type == "mc_word":
+        output["question"] = question["meaning"]
+        info.remove(question)
+        choice = []
+        choice.append(random.choice(info))
+        choice.append(random.choice(info))
+        choice.append(random.choice(info))
+        answer_at = random.randint(0,3)
+        for i in range(4):
+            if i == answer_at:
+                output[chr(97+i)] = question["word"]
+            else:
+                output[chr(97+i)] = choice.pop()["word"]
+        output["answer"] = str(answer_at)
+    else:
+        output["error"] = "invalid question type"
+
+    return output
+
+
+def getVerbQuestion(selectWith, selectRange, database):
+    output = {}
     year = None
+
+    query = "SELECT * FROM verb " + getChapterQuery(selectWith, selectRange)
     if selectWith == "year":
-        if selectRange == 1:
-            query = "SELECT * FROM verb WHERE chapter <= 8"
-        elif selectRange == 2:
-            query = "SELECT * FROM verb WHERE chapter > 8"
-        else:
-            query = "SELECT * FROM verb"
         year = selectRange
     elif selectWith == "chapter":
-        query = "SELECT * FROM verb WHERE chapter = " + str(selectRange)
         if selectRange <= 8:
             year = 1
         elif selectRange > 8:
@@ -87,7 +136,22 @@ def getVerbQuestion(selectWith, selectRange, database):
 
     return output
 
-#CONVERTING VERB INTO DIFFERENT FORM
+#GET THE CHAPTER QUERY
+def getChapterQuery(selectWith, selectRange):
+    if selectWith == "year":
+        if selectRange == 1:
+            return "WHERE chapter <= 8"
+        elif selectRange == 2:
+            return "WHERE chapter > 8"
+        else:
+            return ""
+    return "WHERE chapter = " + str(selectRange)
+
+#CONVERTING ADJECTIVE INTO DIFFERENT FORMS
+#def adjectiveConversion(adjective, database):
+    
+
+#CONVERTING VERB INTO DIFFERENT FORMS
 def verbConversion(verb, database):
     #creating dictionary for output
     data = {}
@@ -95,7 +159,7 @@ def verbConversion(verb, database):
     print "checking verb : " + verb
 
     #check if it is special form
-    info = database.getOutput("SELECT * FROM special_form")
+    info = database.getOutput("SELECT * FROM verb_special_form")
 
     for words in info:
         if verb == words['dictionary_form']:
