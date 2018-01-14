@@ -27,6 +27,8 @@ class JapConverter:
     def getResult(self, path):
         if path[0] == "verbConvert":
             return convertJson(verbConversion(path[1], self.dbHandler))
+        elif path[0] == "adjectiveConvert":
+            return convertJson(adjectiveConversion(path[1], self.dbHandler))
         elif path[0] == "question":
             return convertJson(getQuestion(path[1:], self.dbHandler))
         else:
@@ -40,6 +42,8 @@ class JapConverter:
 def getQuestion(question_type, database):
     if question_type[0] == "verb":
         return getVerbQuestion(question_type[1], int(question_type[2]), database)
+    elif question_type[0] == "adjective":
+        return getAdjectiveQuestion(question_type[1], int(question_type[2]), database)
     elif question_type[0] == "vocab":
         return getVocabQuestion(question_type[1], int(question_type[2]), question_type[3], database)
     else:
@@ -97,6 +101,43 @@ def getVocabQuestion(selectWith, selectRange, question_type, database):
 
     return output
 
+def getAdjectiveQuestion(selectWith, selectRange, database):
+    output = {}
+    year = None
+    query = "SELECT * FROM adjective " + getChapterQuery(selectWith, selectRange)
+    if selectWith == "year":
+        year = selectRange
+    elif selectWith == "chapter":
+        if selectRange <= 8:
+            year = 1
+        elif selectRange > 8:
+            year = 2
+        else:
+            year = 0
+    else:
+        output["error"] = "invalid input"
+        return output
+
+    #getting the information from the database
+    info = database.getOutput(query)
+    if len(info) == 0:
+        output["error"] = "nothing inside database"
+        return output
+    question = random.choice(info)
+    output["adjective"] = question["word"]
+    output["meaning"] = question["meaning"]
+    conjugation = adjectiveConversion(output["adjective"], database)
+    #select what form to ask
+    if year == 1:
+        output["question"] = random.choice(first_year)
+        output["answer"] = conjugation[output["question"]]
+    else:
+        adjective_form = first_year + second_year
+        output["question"] = random.choice(adjective_form)
+        output["answer"] = conjugation[output["question"]]
+        
+    return output]
+
 
 def getVerbQuestion(selectWith, selectRange, database):
     output = {}
@@ -131,7 +172,7 @@ def getVerbQuestion(selectWith, selectRange, database):
         output["answer"] = conjugation[output["question"]]
     else:
         verb_form = first_year + second_year
-        output["question"] = random.choice(second_year)
+        output["question"] = random.choice(verb_form)
         output["answer"] = conjugation[output["question"]]
 
     return output
@@ -148,8 +189,44 @@ def getChapterQuery(selectWith, selectRange):
     return "WHERE chapter = " + str(selectRange)
 
 #CONVERTING ADJECTIVE INTO DIFFERENT FORMS
-#def adjectiveConversion(adjective, database):
+def adjectiveConversion(adjective, database):
+    #creating dictionary for output
+    data = {}
+    data['dictionary_form'] = adjective
+
+    #check if it is special form
+    info = database.getOutput("SELECT * FROM adjective_special_form")
+
+    for words in info:
+        if adjective == words['dictionary_form']:
+            return words
+
+    #check if it is i or na adjective
+    if adjective[-1] == u"い":
+        help_form = adjective[:-1]
+        data["present"] = adjective + u"です"
+        data["negative"] = help_form + u"くないです"
+        data["past"] = help_form + u"かったです"
+        data["past_negative"] = help_form + u"くなかったです"
+        data["te_form"] = help_form + u"くて"
+        data["negative_short"] = help_form + u"くない"
+        data["past_short"] = help_form + u"かった"
+        data["past_negative_short"] = help_form + u"くなかった"
+    elif adjective[-1] == u"な":
+        help_form = adjective[:-1]
+        data["present"] = help_form + u"です"
+        data["negative"] = help_form + u"じゃないです"
+        data["past"] = help_form + u"でした"
+        data["past_negative"] = help_form + u"じゃなかったです"
+        data["te_form"] = help_form + u"で"
+        data["negative_short"] = help_form + u"じゃない"
+        data["past_short"] = help_form + u"だった"
+        data["past_negative_short"] = help_form + u"じゃなかった"
+    else:
+        data["error"] = "not an adjective"
     
+    return data
+
 
 #CONVERTING VERB INTO DIFFERENT FORMS
 def verbConversion(verb, database):
@@ -220,7 +297,7 @@ def verbConversion(verb, database):
             data['past_short'] = data['te_form'][:-1] + u"だ"
         data['past_negative_short'] = data['negative_short'][:-2] + u"なかった"
     else:
-        data['error'] = "not working"
+        data['error'] = "not a verb"
     return data
 
 
