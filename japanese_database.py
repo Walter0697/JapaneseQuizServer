@@ -62,6 +62,23 @@ def create_verb_specialform():
     print("INSERTED DATA TO TABLE verb_special_form\n")
     database.commit()
 
+def create_adjective_specialform():
+    print("CREATING TABLE adjective_special_form")
+    cursor.execute("DROP TABLE IF EXISTS adjective_special_form")
+    cursor.execute("""CREATE TABLE adjective_special_form (
+            dictionary_form VARCHAR(15) CHARACTER SET utf8 COLLATE utf8_general_ci,
+            present VARCHAR(15) CHARACTER SET utf8 COLLATE utf8_general_ci,
+            negative VARCHAR(15) CHARACTER SET utf8 COLLATE utf8_general_ci,
+            past VARCHAR(15) CHARACTER SET utf8 COLLATE utf8_general_ci,
+            past_negative VARCHAR(15) CHARACTER SET utf8 COLLATE utf8_general_ci,
+            te_form VARCHAR(15) CHARACTER SET utf8 COLLATE utf8_general_ci,
+            negative_short VARCHAR(15) CHARACTER SET utf8 COLLATE utf8_general_ci,
+            past_short VARCHAR(15) CHARACTER SET utf8 COLLATE utf8_general_ci,
+            past_negative_short VARCHAR(15) CHARACTER SET utf8 COLLATE utf8_general_ci)""")
+    
+    print("INSERTING DATA TO TABLE adjective_special_form")
+    cursor.execute("INSERT INTO adjective_special_form (dictionary_form, present, negative, past, past_negative, te_form, negative_short, past_short, past_negative_short) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (u"いい", u"いいです", u"よくないです", u"よかったです", u"よくなかったです", u"よくて", u"よくない", u"よかった", u"よくなかった"))
+    
 def create_ruverb():
     print("CREATING TABLE ru_verb")
     cursor.execute("DROP TABLE IF EXISTS ru_verb")
@@ -250,7 +267,8 @@ def create_vocab():
 
 
 #create_hiragana()
-create_verb_specialform()
+#create_verb_specialform()
+create_adjective_specialform()
 #create_ruverb()
 #create_verb()
-create_vocab()
+#create_vocab()
