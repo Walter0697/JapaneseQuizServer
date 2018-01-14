@@ -125,7 +125,7 @@ def create_ruverb():
     cursor.execute("INSERT INTO ru_verb (verb) VALUES (%s)", (u"でる",))
     cursor.execute("INSERT INTO ru_verb (verb) VALUES (%s)", (u"出る",))
     cursor.execute("INSERT INTO ru_verb (verb) VALUES (%s)", (u"きめる",))
-    cursor.execute("INSERT INTO ru_verb (verb) VALUES (%s)", (u"つかれる,))
+    cursor.execute("INSERT INTO ru_verb (verb) VALUES (%s)", (u"つかれる",))
     cursor.execute("INSERT INTO ru_verb (verb) VALUES (%s)", (u"やめる",))
     cursor.execute("INSERT INTO ru_verb (verb) VALUES (%s)", (u"せきがでる",))  
     cursor.execute("INSERT INTO ru_verb (verb) VALUES (%s)", (u"わかれる",))   
