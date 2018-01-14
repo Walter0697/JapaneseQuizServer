@@ -39,10 +39,10 @@ def create_hiragana():
     print("INSERTED DATA TO TABLE hiragana\n")
     database.commit()
 
-def create_specialform():
-    print("CREATING TABLE special_form")
-    cursor.execute("DROP TABLE IF EXISTS special_form")
-    cursor.execute("""CREATE TABLE special_form (
+def create_verb_specialform():
+    print("CREATING TABLE verb_special_form")
+    cursor.execute("DROP TABLE IF EXISTS verb_special_form")
+    cursor.execute("""CREATE TABLE verb_special_form (
             dictionary_form VARCHAR(15) CHARACTER SET utf8 COLLATE utf8_general_ci,
             stem_form VARCHAR(15) CHARACTER SET utf8 COLLATE utf8_general_ci,
             present VARCHAR(15) CHARACTER SET utf8 COLLATE utf8_general_ci,
@@ -54,12 +54,12 @@ def create_specialform():
             past_short VARCHAR(15) CHARACTER SET utf8 COLLATE utf8_general_ci,
             past_negative_short VARCHAR(15) CHARACTER SET utf8 COLLATE utf8_general_ci);""")
 
-    print("INSERTING DATA TO TABLE special_form")
-    cursor.execute("INSERT INTO special_form (dictionary_form, stem_form, present, negative, te_form, past, past_negative,negative_short, past_short, past_negative_short) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (u"くる", u"く", u"きます", u"きません", u"きて", u"きました", u"きませんでした",  u"こない", u"きた", u"こなかった"))
-    cursor.execute("INSERT INTO special_form (dictionary_form, stem_form, present, negative, te_form, past, past_negative,negative_short, past_short, past_negative_short) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (u"する", u"す", u"します", u"しません", u"して", u"しました", u"しませんでした",  u"しない", u"した", u"しなかった"))
-    cursor.execute("INSERT INTO special_form (dictionary_form, stem_form, present, negative, te_form, past, past_negative,negative_short, past_short, past_negative_short) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (u"いく", u"い", u"いきます", u"いきません", u"いって", u"いきました", u"いきませんでした",  u"いかない", u"いった", u"いかなかった"))
+    print("INSERTING DATA TO TABLE verb_special_form")
+    cursor.execute("INSERT INTO verb_special_form (dictionary_form, stem_form, present, negative, te_form, past, past_negative,negative_short, past_short, past_negative_short) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (u"くる", u"く", u"きます", u"きません", u"きて", u"きました", u"きませんでした",  u"こない", u"きた", u"こなかった"))
+    cursor.execute("INSERT INTO verb_special_form (dictionary_form, stem_form, present, negative, te_form, past, past_negative,negative_short, past_short, past_negative_short) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (u"する", u"す", u"します", u"しません", u"して", u"しました", u"しませんでした",  u"しない", u"した", u"しなかった"))
+    cursor.execute("INSERT INTO verb_special_form (dictionary_form, stem_form, present, negative, te_form, past, past_negative,negative_short, past_short, past_negative_short) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (u"いく", u"い", u"いきます", u"いきません", u"いって", u"いきました", u"いきませんでした",  u"いかない", u"いった", u"いかなかった"))
 
-    print("INSERTED DATA TO TABLE special_form\n")
+    print("INSERTED DATA TO TABLE verb_special_form\n")
     database.commit()
 
 def create_ruverb():
@@ -250,7 +250,7 @@ def create_vocab():
 
 
 #create_hiragana()
-#create_specialform()
+create_verb_specialform()
 #create_ruverb()
 #create_verb()
 create_vocab()
