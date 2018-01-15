@@ -135,7 +135,7 @@ def create_ruverb():
 
 def create_verb():
     print("CREATING TABLE verb")
-    cursor.execute("DROP TABLE IF EXISTS verb;")
+    cursor.execute("DROP TABLE verb;")
     cursor.execute("""CREATE TABLE verb(
         word VARCHAR(15) CHARACTER SET utf8 COLLATE utf8_general_ci,
         meaning VARCHAR(50),
@@ -201,7 +201,7 @@ def create_verb():
  
 def create_adjective():
     print("CREATE TABLE adjective")
-    cursor.execute("DROP TABLE IF EXISTS adjective;")
+    cursor.execute("DROP TABLE adjective;")
     cursor.execute("""CREATE TABLE adjective(
             word VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
             meaning VARCHAR(50),
@@ -261,7 +261,7 @@ def create_adjective():
     
 def create_vocab():
     print("CREATING TABLE vocab")
-    cursor.execute("DROP TABLE IF EXISTS vocab;")
+    cursor.execute("DROP TABLE vocab;")
     cursor.execute("""CREATE TABLE vocab(
             word VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
             meaning VARCHAR(50),
