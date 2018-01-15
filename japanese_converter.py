@@ -139,7 +139,7 @@ def getAdjectiveQuestion(selectWith, selectRange, database):
         output["question"] = random.choice(adjective_form)
         output["answer"] = conjugation[output["question"]]
         
-    return output]
+    return output
 
 
 def getVerbQuestion(selectWith, selectRange, database):
