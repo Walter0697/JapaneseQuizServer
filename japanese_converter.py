@@ -52,17 +52,13 @@ def getQuestion(question_type, database):
 
 def getVocabQuestion(selectWith, selectRange, question_type, database):
     output = {}
-    query = None
-    randNum = random.randint(0, 2)
-    if randNum == 0 or (selectWith == "chapter" and selectRange < 3):
-        query = "SELECT * FROM vocab " + getChapterQuery(selectWith, selectRange)
-    elif randNum == 1 or (selectWith == "chapter" and selectRange == 4):
-        query = "SELECT * FROM verb " + getChapterQuery(selectWith, selectRange)
-    else:
-        query = "SELECT * FROM adjective " + getChapterQuery(selectWith, selectRange)
-
-    #getting the information from the databse
+    query = "SELECT * FROM vocab " + getChapterQuery(selectWith, selectRange)
     info = database.getOutput(query)
+    query = "SELECT * FROM verb " + getChapterQuery(selectWith, selectRange)
+    info = info + database.getOutput(query)
+    query = "SELECT * FROM adjective " + getChapterQuery(selectWith, selectRange)
+    info = info + database.getOutput(query)
+
     if len(info) == 0:
         output["error"] = "nothing inside database"
 
