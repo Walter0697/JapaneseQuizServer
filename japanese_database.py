@@ -322,6 +322,31 @@ def create_katakana_vocab():
     print("INSERTED DATA TO TABLE katakana_vocab")
     database.commit()
 
+def create_kanji():
+    print("CREATING TABLE kanji")
+    cursor.execute("DROP TABLE IF EXISTS kanji;")
+    cursor.execute("""CREATE TABLE kanji(
+            kanji VARCHAR(5) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+            hiragana VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+            meaning VARCHAR(30),
+            chapter INT
+            );""")
+
+    print("INSERTING DATA TO TABLE kanji")
+    cursor.execute("INSERT INTO kanji (kanji, hiragana, meaning, chapter) VALUES (%s, %s, %s, 3)", (u"一", u"いち", u"one"))
+    cursor.execute("INSERT INTO kanji (kanji, hiragana, meaning, chapter) VALUES (%s, %s, %s, 3)", (u"二", u"に", u"two"))
+    cursor.execute("INSERT INTO kanji (kanji, hiragana, meaning, chapter) VALUES (%s, %s, %s, 3)", (u"三", u"さん", u"three"))
+    cursor.execute("INSERT INTO kanji (kanji, hiragana, meaning, chapter) VALUES (%s, %s, %s, 3)", (u"四", u"よん", u"four"))
+    cursor.execute("INSERT INTO kanji (kanji, hiragana, meaning, chapter) VALUES (%s, %s, %s, 3)", (u"五", u"ご", u"five"))
+    cursor.execute("INSERT INTO kanji (kanji, hiragana, meaning, chapter) VALUES (%s, %s, %s, 3)", (u"六", u"ろく", u"six"))
+    cursor.execute("INSERT INTO kanji (kanji, hiragana, meaning, chapter) VALUES (%s, %s, %s, 3)", (u"七", u"なな", u"seven"))
+    cursor.execute("INSERT INTO kanji (kanji, hiragana, meaning, chapter) VALUES (%s, %s, %s, 3)", (u"八", u"はち", u"eight"))
+    cursor.execute("INSERT INTO kanji (kanji, hiragana, meaning, chapter) VALUES (%s, %s, %s, 3)", (u"九", u"きゅう", u"nine"))
+    cursor.execute("INSERT INTO kanji (kanji, hiragana, meaning, chapter) VALUES (%s, %s, %s, 3)", (u"十", u"じゅう", u"ten"))
+
+    print("INSERTED DATA TO TABLE kanji")
+    database.commit()
+
 def create_vocab():
     print("CREATING TABLE vocab")
     cursor.execute("DROP TABLE IF EXISTS vocab;")
@@ -601,8 +626,8 @@ def create_vocab():
 #create_hiragana()
 #create_verb_specialform()
 #create_adjective_specialform()
-create_ruverb()
-create_verb()
-create_vocab()
-create_adjective()
-create_katakana_vocab()
+#create_ruverb()
+#create_verb()
+#create_vocab()
+#create_adjective()
+#create_katakana_vocab()
