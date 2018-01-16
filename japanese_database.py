@@ -631,3 +631,4 @@ def create_vocab():
 #create_vocab()
 #create_adjective()
 #create_katakana_vocab()
+create_kanji()
