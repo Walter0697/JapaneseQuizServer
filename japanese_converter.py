@@ -9,8 +9,11 @@ import random
 #CONSTANT ARRAY
 instruction = {"instruction":"use the following path to get more result",
         "/verbConvert/{verb}":"this will show you most verb conjugation",
+        "/adjectiveConvert/{adjective}":"this will show you most adjective conjugation",
         "/question/verb/{year/chapter}/{range}":"use random to get random year or type, example /question/verb/year/1",
-        "/question/vocab/{year/chapter}/{range}/{type}":"type refers to mc or short question"}
+        "/question/vocab/{year/chapter}/{range}/{type}":"type refers to mc or short question",
+        "/question/adjective/{year/chapter}/{range}":"same as verb",
+        "/question/kanji/{year/chapter}/{range}/{type}":"same as vocab"}
 
 first_year = ["present", "negative", "te_form", "past", "past_negative", "negative_short"]
 second_year = ["past_negative_short", "past_short"]
@@ -46,9 +49,49 @@ def getQuestion(question_type, database):
         return getAdjectiveQuestion(question_type[1], int(question_type[2]), database)
     elif question_type[0] == "vocab":
         return getVocabQuestion(question_type[1], int(question_type[2]), question_type[3], database)
+    elif question_type[0] == "kanji":
+        return getKanjiQuestion(question_type[1], int(question_type[2]), question_type[3], database)
     else:
         return {"error" : "invalid type of question"}
             
+def getKanjiQuestion(selectWith, selectRange, question_type, database):
+    output = {}
+    query = "SELECT * FROM kanji " + getChapterQuery(selectWith, selectRange)
+    info = database.getOutput(query)
+    question = random.choice(info)
+    if question_type == "spelling":
+        output["question"] = question["kanji"]
+        output["answer"] = question["hiragana"]
+    elif question_type == "mc_meaning":
+        output["question"] = question["kanji"]
+        info.remove(question)
+        choice = []
+        for i in range(3):
+            choice.append(random.choice(info))
+        answer_at = random.randint(0,3)
+        for i in range(4):
+            if i == answer_at:
+                output[chr(97+i)] = question["meaning"]
+            else:
+                output[chr(97+i)] = choice.pop()["meaning"]
+        output["answer"] = str(answer_at)
+    elif question_type == "mc_word":
+        output["question"] = question["meaning"]
+        info.remove(question)
+        choice = []
+        for i in range(3):
+            choice.append(random.choice(info))
+        answer_at = random.randint(0,3)
+        for i in range(4):
+            if i == answer_at:
+                output[chr(97+i)] = question["kanji"]
+            else:
+                output[chr(97+i)] = choice.pop()["kanji"]
+        output["answer"] = str(answer_at)
+    else:
+        output["error"] = "question type not supported"
+
+    return output
 
 def getVocabQuestion(selectWith, selectRange, question_type, database):
     output = {}
@@ -71,9 +114,8 @@ def getVocabQuestion(selectWith, selectRange, question_type, database):
         output["question"] = question["word"]
         info.remove(question)
         choice = []
-        choice.append(random.choice(info))
-        choice.append(random.choice(info))
-        choice.append(random.choice(info))
+        for i in range(3):
+            choice.append(random.choice(info))
         answer_at = random.randint(0,3)
         for i in range(4):
             if i == answer_at:
@@ -85,9 +127,8 @@ def getVocabQuestion(selectWith, selectRange, question_type, database):
         output["question"] = question["meaning"]
         info.remove(question)
         choice = []
-        choice.append(random.choice(info))
-        choice.append(random.choice(info))
-        choice.append(random.choice(info))
+        for i in range(3):
+            choice.append(random.choice(info))
         answer_at = random.randint(0,3)
         for i in range(4):
             if i == answer_at:
