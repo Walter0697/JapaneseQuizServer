@@ -328,7 +328,7 @@ def verbConversion(verb, database):
         elif starting == "g":
             data['te_form'] = verb[:-1] + u"いで"
         elif starting == "s":
-            data['te_form'] = verb[:-1] + u"してi"
+            data['te_form'] = verb[:-1] + u"して"
         #negative short
         data['negative_short'] = verb[:-1] + aletter + u"ない"
         if data['te_form'][-1] == u"て":
