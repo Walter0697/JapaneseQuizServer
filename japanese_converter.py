@@ -28,6 +28,9 @@ class JapConverter:
         self.dbHandler = database_connect.DatabaseHandler()
 
     def getResult(self, path):
+        if len(path) < 2:
+            return {"error" : "not enough arguments"}
+        
         if path[0] == "verbConvert":
             return convertJson(verbConversion(path[1], self.dbHandler))
         elif path[0] == "adjectiveConvert":
@@ -44,12 +47,20 @@ class JapConverter:
 #GET A RANDOM QUESTION
 def getQuestion(question_type, database):
     if question_type[0] == "verb":
+        if len(question_type) < 3:
+            return {"error" : "not enough arguments"}
         return getVerbQuestion(question_type[1], int(question_type[2]), database)
     elif question_type[0] == "adjective":
+        if len(question_type) < 3:
+            return {"error" : "not enough arguments"}
         return getAdjectiveQuestion(question_type[1], int(question_type[2]), database)
     elif question_type[0] == "vocab":
+        if len(question_type) < 4:
+            return {"error" : "not enough arguments"}
         return getVocabQuestion(question_type[1], int(question_type[2]), question_type[3], database)
     elif question_type[0] == "kanji":
+        if len(question_type) < 4:
+            return {"error" : "not enough arguments"}        
         return getKanjiQuestion(question_type[1], int(question_type[2]), question_type[3], database)
     else:
         return {"error" : "invalid type of question"}
