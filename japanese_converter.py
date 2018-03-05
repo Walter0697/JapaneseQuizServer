@@ -70,7 +70,7 @@ def getQuestion(question_type, database):
 
 def getKatakanaQuestion(database):
     output = {}
-    query = "SELECT * FROM katakana"
+    query = "SELECT * FROM katakana_vocab"
     info = database.getOutput(query)
     question = random.choice(info)
     output["question"] = question["katakana"]
