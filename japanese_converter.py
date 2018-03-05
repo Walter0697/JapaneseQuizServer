@@ -13,7 +13,8 @@ instruction = {"instruction":"use the following path to get more result",
         "/question/verb/{year/chapter}/{range}":"use random to get random year or type, example /question/verb/year/1",
         "/question/vocab/{year/chapter}/{range}/{type}":"type refers to mc or short question",
         "/question/adjective/{year/chapter}/{range}":"same as verb",
-        "/question/kanji/{year/chapter}/{range}/{type}":"same as vocab"}
+        "/question/kanji/{year/chapter}/{range}/{type}":"same as vocab",
+        "/question/katakana":"just question with katakana"}
 
 first_year = ["present", "negative", "te_form", "past", "past_negative", "negative_short"]
 second_year = ["past_negative_short", "past_short"]
@@ -64,6 +65,16 @@ def getQuestion(question_type, database):
         return getKanjiQuestion(question_type[1], int(question_type[2]), question_type[3], database)
     else:
         return {"error" : "invalid type of question"}
+
+def getKatakanaQuestion(database):
+    output = {}
+    query = "SELECT * FROM katakana"
+    info = database.getOutput(query)
+    question = random.choice(info)
+    output["question"] = question["katakana"]
+    output["answer"] = question["meaning"]
+    
+    return output
             
 def getKanjiQuestion(selectWith, selectRange, question_type, database):
     output = {}
