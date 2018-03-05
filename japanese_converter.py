@@ -63,6 +63,8 @@ def getQuestion(question_type, database):
         if len(question_type) < 4:
             return {"error" : "not enough arguments"}        
         return getKanjiQuestion(question_type[1], int(question_type[2]), question_type[3], database)
+    elif question_type[0] == "katakana":
+        return getKatakanaQuestion(database)
     else:
         return {"error" : "invalid type of question"}
 
