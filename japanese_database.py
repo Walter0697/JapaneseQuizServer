@@ -548,7 +548,14 @@ def create_kanji():
     cursor.execute("INSERT INTO kanji (kanji, hiragana, meaning, chapter) VALUES (%s, %s, %s, 14)", (u"店員", u"てんいん", u"store attendant"))
     cursor.execute("INSERT INTO kanji (kanji, hiragana, meaning, chapter) VALUES (%s, %s, %s, 14)", (u"売店", u"ばいてん", u"stall"))
     cursor.execute("INSERT INTO kanji (kanji, hiragana, meaning, chapter) VALUES (%s, %s, %s, 14)", (u"書店", u"しょてん", u"book store"))
-    
+    cursor.execute("INSERT INTO kanji (kanji, hiragana, meaning, chapter) VALUES (%s, %s, %s, 14)", (u"去年", u"きょねん", u"last year"))
+    cursor.execute("INSERT INTO kanji (kanji, hiragana, meaning, chapter) VALUES (%s, %s, %s, 14)", (u"過去", u"かこ", u"the past"))
+    cursor.execute("INSERT INTO kanji (kanji, hiragana, meaning, chapter) VALUES (%s, %s, %s, 14)", (u"去る", u"さる", u"to leave"))
+    cursor.execute("INSERT INTO kanji (kanji, hiragana, meaning, chapter) VALUES (%s, %s, %s, 14)", (u"消去する", u"しょうきょする", u"to erase"))
+    cursor.execute("INSERT INTO kanji (kanji, hiragana, meaning, chapter) VALUES (%s, %s, %s, 14)", (u"急に", u"きゅうに", u"suddenly"))
+    cursor.execute("INSERT INTO kanji (kanji, hiragana, meaning, chapter) VALUES (%s, %s, %s, 14)", (u"急ぐ", u"いそぐ", u"to hurry"))
+    cursor.execute("INSERT INTO kanji (kanji, hiragana, meaning, chapter) VALUES (%s, %s, %s, 14)", (u"急行", u"きゅうこう", u"express train"))
+    cursor.execute("INSERT INTO kanji (kanji, hiragana, meaning, chapter) VALUES (%s, %s, %s, 14)", (u"特急", u"とっきゅう", u"super express"))
     
     print("INSERTED DATA TO TABLE kanji")
     database.commit()
