@@ -342,6 +342,7 @@ def create_katakana_vocab():
     cursor.execute("INSERT INTO katakana_vocab (katakana, meaning) VALUES (%s, %s)", (u"マンション", u"multistory apartment building"))
     cursor.execute("INSERT INTO katakana_vocab (katakana, meaning) VALUES (%s, %s)", (u"ラヅオ", u"radio"))
     cursor.execute("INSERT INTO katakana_vocab (katakana, meaning) VALUES (%s, %s)", (u"ホワイトデー", u"White Day"))
+    cursor.execute("INSERT INTO katakana_vocab (katakana, meaning) VALUES (%s, %s)", (u"ワエイター", u"waiter"))
 
     print("INSERTED DATA TO TABLE katakana_vocab")
     database.commit()
@@ -852,6 +853,7 @@ def create_vocab():
     cursor.execute("INSERT INTO vocab (word, meaning, chapter) VALUES (%s, %s, 9)", (u"よころで", u"by the way"))
     cursor.execute("INSERT INTO vocab (word, meaning, chapter) VALUES (%s, %s, 9)", (u"みんな", u"all"))
     cursor.execute("INSERT INTO vocab (word, meaning, chapter) VALUES (%s, %s, 9)", (u"もう", u"already"))
+    cursor.execute("INSERT INTO vocab (word, meaning, chapter) VALUES (%s, %s, 14)", (u"", u""))
     
     print("INSERTED DATA TO TABLE vocab")
     database.commit()
