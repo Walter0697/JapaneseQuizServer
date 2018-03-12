@@ -566,7 +566,7 @@ def create_kanji():
     cursor.execute("INSERT INTO kanji (kanji, hiragana, meaning, chapter) VALUES (%s, %s, %s, 14)", (u"当時", u"とうじ", u"at that time"))
     cursor.execute("INSERT INTO kanji (kanji, hiragana, meaning, chapter) VALUES (%s, %s, %s, 14)", (u"当たる", u"あたる", u"to hit"))
     cursor.execute("INSERT INTO kanji (kanji, hiragana, meaning, chapter) VALUES (%s, %s, %s, 14)", (u"音楽", u"おんがく", u"music"))
-    cursor.execute("INSERT INTO kanji (kanji, hiragana, meaning, chapter) VALUES (%s, %s, %s, 14)", (u"発音", u"ほつおん", u"prnunciation"))
+    cursor.execute("INSERT INTO kanji (kanji, hiragana, meaning, chapter) VALUES (%s, %s, %s, 14)", (u"発音", u"ほつおん", u"pronunciation"))
     cursor.execute("INSERT INTO kanji (kanji, hiragana, meaning, chapter) VALUES (%s, %s, %s, 14)", (u"音", u"おと", u"sound"))
     cursor.execute("INSERT INTO kanji (kanji, hiragana, meaning, chapter) VALUES (%s, %s, %s, 14)", (u"本音", u"ほんね", u"real intention"))
     cursor.execute("INSERT INTO kanji (kanji, hiragana, meaning, chapter) VALUES (%s, %s, %s, 14)", (u"楽しい", u"たのしい", u"fun"))
