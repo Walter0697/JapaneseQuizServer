@@ -889,11 +889,11 @@ def create_vocab():
 
 
 #create_hiragana()
-create_verb_specialform()
+#create_verb_specialform()
 #create_adjective_specialform()
-create_ruverb()
-create_verb()
-create_vocab()
-#create_adjective()
+#create_ruverb()
+#create_verb()
+#create_vocab()
+create_adjective()
 #create_katakana_vocab()
-create_kanji()
+#create_kanji()
